@@ -1,6 +1,7 @@
 package com.bridgelabz.employee_payroll.service;
 
 import com.bridgelabz.employee_payroll.dto.EmployeeDTO;
+import com.bridgelabz.employee_payroll.exception.EmployeePayrollException;
 import com.bridgelabz.employee_payroll.model.Employee;
 import com.bridgelabz.employee_payroll.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,33 @@ public class EmployeePayrollServiceimpl implements IEmployeePayrollService {
     }
 
     public Employee createEmployeePayrollData(EmployeeDTO empPayrollDTO) {
-        Employee employee = new Employee(empPayrollDTO);
-
-       return  employeeRepository.save(employee);
-
+        try {
+            Employee employee = new Employee(empPayrollDTO);
+            return employeeRepository.save(employee);
+        }
+        catch(Exception e){
+            throw new EmployeePayrollException(e.getMessage());
+        }
     }
 
     public Employee updateEmployeePayrollData(int empId, EmployeeDTO empPayrollDTO) {
-        Employee empData = this.getEmployeePayrollDataById(empId);
-        empData.setName(empPayrollDTO.getName());
-        empData.setSalary(empPayrollDTO.getSalary());
-        return employeeRepository.save(empData);
-
+       try {
+           Employee empData = this.getEmployeePayrollDataById(empId);
+           empData.setName(empPayrollDTO.getName());
+           empData.setSalary(empPayrollDTO.getSalary());
+           return employeeRepository.save(empData);
+       }
+       catch(Exception e){
+           throw new EmployeePayrollException(e.getMessage());
+       }
     }
 
     public String deleteEmployeePayrollData(int empId) {
-        employeeRepository.deleteById(empId);
-        return "Succesfully deleted";
+        try {
+            employeeRepository.deleteById(empId);
+            return "Succesfully deleted";
+        } catch (Exception e) {
+            throw new EmployeePayrollException(e.getMessage());
+        }
     }
 }

@@ -4,15 +4,19 @@ import com.bridgelabz.employee_payroll.dto.EmployeeDTO;
 import com.bridgelabz.employee_payroll.dto.ResponseDTO;
 import com.bridgelabz.employee_payroll.model.Employee;
 import com.bridgelabz.employee_payroll.service.IEmployeePayrollService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/employeepayrollservice")
+
 public class EmployeeController {
 
     @Autowired
@@ -33,7 +37,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDTO> addEmployeePayrollData(@RequestBody EmployeeDTO empPayrollDTO) {
+    public ResponseEntity<ResponseDTO> addEmployeePayrollData( @Valid @RequestBody EmployeeDTO empPayrollDTO) {
         Employee employee = employeePayrollService.createEmployeePayrollData(empPayrollDTO);
         ResponseDTO responseDTO = new ResponseDTO("created employee data successfully",employee);
         return new ResponseEntity<ResponseDTO>(responseDTO,HttpStatus.OK);

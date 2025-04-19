@@ -5,10 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,9 +22,10 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int employeeid;
     private String name;
+    @Min(value = 500, message = "Min Wage should be more than 500")
     private double salary;
     private String gender;
-    private String startdate;
+    private LocalDate startdate;
     private String note;
     private String profilepic;
     private List<String> department;
